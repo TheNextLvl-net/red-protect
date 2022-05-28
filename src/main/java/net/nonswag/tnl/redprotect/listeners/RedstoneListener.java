@@ -17,10 +17,12 @@ public class RedstoneListener implements Listener {
 
     @EventHandler
     public void onRedstone(@Nonnull BlockRedstoneEvent event) {
-        Location location = event.getBlock().getLocation();
-        if (increaseState(location) <= 5) return;
-        event.setNewCurrent(0);
-        Bukkit.getScheduler().runTaskLater(RedProtect.getInstance(), () -> decreaseState(location), 20);
+        if (RedProtect.getInstance().isRedstone()) {
+            Location location = event.getBlock().getLocation();
+            if (increaseState(location) <= 5) return;
+            event.setNewCurrent(0);
+            Bukkit.getScheduler().runTaskLater(RedProtect.getInstance(), () -> decreaseState(location), 20);
+        } else event.setNewCurrent(0);
     }
 
     public static int increaseState(@Nonnull Location location) {
