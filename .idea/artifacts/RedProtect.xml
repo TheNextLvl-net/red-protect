@@ -3,7 +3,6 @@
     <output-path>$USER_HOME$/Desktop/Coding/PluginProjects/Plugins/plugins</output-path>
     <root id="archive" name="RedProtect.jar">
       <element id="module-output" name="RedProtect" />
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/Coding/PluginProjects/Plugins/TNLCore.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

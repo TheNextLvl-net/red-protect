@@ -1,9 +1,9 @@
 package net.nonswag.tnl.redprotect.tasks;
 
 import lombok.Getter;
-import net.nonswag.tnl.core.api.reflection.Reflection;
 import net.nonswag.tnl.redprotect.RedProtect;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 
 import javax.annotation.Nonnull;
 
@@ -34,6 +34,6 @@ public class TPSTask extends Thread {
     }
 
     private double getTPS() {
-        return Reflection.<double[]>getField(Reflection.getField(Bukkit.getServer(), "console").nonnull(), "recentTps").nonnull()[0];
+        return ((CraftServer) Bukkit.getServer()).getServer().recentTps[0];
     }
 }
