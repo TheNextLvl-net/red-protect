@@ -17,7 +17,7 @@ public class TPSTask extends Thread {
     public void run() {
         try {
             while (isAlive() && !isInterrupted()) {
-                Thread.sleep(15000);
+                Thread.sleep(5000);
                 if (getTPS() <= 18 && RedProtect.getInstance().isRedstone()) {
                     RedProtect.getInstance().setRedstone(false);
                     RedProtect.getInstance().broadcastMeasure();

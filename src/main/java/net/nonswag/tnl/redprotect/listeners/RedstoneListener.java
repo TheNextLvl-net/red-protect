@@ -8,20 +8,30 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class RedstoneListener implements Listener {
 
     @Nonnull
     private static final HashMap<Location, Integer> states = new HashMap<>();
+    @Nonnull
+    private static final List<Location> sources = new ArrayList<>();
 
     @EventHandler
     public void onRedstone(@Nonnull BlockRedstoneEvent event) {
         if (RedProtect.getInstance().isRedstone()) {
             Location location = event.getBlock().getLocation();
-            if (increaseState(location) <= 5) return;
-            event.setNewCurrent(0);
-            Bukkit.getScheduler().runTaskLater(RedProtect.getInstance(), () -> decreaseState(location), 20);
+            if (increaseState(location) >= 10) {
+                if (!sources.contains(location)) {
+                    RedProtect.getInstance().broadcastMalicious(location);
+                    sources.add(location);
+                    Bukkit.getScheduler().runTaskLater(RedProtect.getInstance(), () -> sources.remove(location), 100);
+                }
+                event.setNewCurrent(0);
+            }
+            Bukkit.getScheduler().runTaskLater(RedProtect.getInstance(), () -> decreaseState(location), 100);
         } else event.setNewCurrent(0);
     }
 
