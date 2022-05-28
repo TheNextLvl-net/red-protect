@@ -49,7 +49,12 @@ public class RedProtect extends JavaPlugin {
         });
     }
 
+    private boolean messages = true;
+
     public void broadcastMalicious(@Nonnull Location location) {
+        if (!messages) return;
+        messages = false;
+        Bukkit.getScheduler().runTaskLater(this, () -> messages = true, 50);
         Bukkit.getOnlinePlayers().forEach(all -> {
             if (!all.hasPermission("redclock.notify") || !isRedstone()) return;
             String position = location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ();
