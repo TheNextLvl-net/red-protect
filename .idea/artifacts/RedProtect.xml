@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="RedProtect">
-    <output-path>$USER_HOME$/Desktop/Coding/PluginProjects/Plugins/plugins</output-path>
+    <output-path>$USER_HOME$/Desktop/Coding/PluginProjects/Orders</output-path>
     <root id="archive" name="RedProtect.jar">
       <element id="module-output" name="RedProtect" />
     </root>
