@@ -1,6 +1,8 @@
 package net.nonswag.tnl.redprotect.listeners;
 
 import com.plotsquared.core.plot.Plot;
+import net.nonswag.core.api.annotation.FieldsAreNonnullByDefault;
+import net.nonswag.core.api.annotation.MethodsReturnNullableByDefault;
 import net.nonswag.tnl.redprotect.RedProtect;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -9,25 +11,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@FieldsAreNonnullByDefault
+@ParametersAreNonnullByDefault
+@MethodsReturnNullableByDefault
 public class RedstoneListener implements Listener {
-
-    @Nonnull
     private static final HashMap<Chunk, Integer> CHUNK_STATES = new HashMap<>();
-    @Nonnull
     private static final HashMap<Plot, Integer> PLOT_STATES = new HashMap<>();
-    @Nonnull
     private static final List<Chunk> BLOCKED_CHUNKS = new ArrayList<>();
-    @Nonnull
     private static final List<Plot> BLOCKED_PLOTS = new ArrayList<>();
 
     @EventHandler
-    public void onRedstone(@Nonnull BlockRedstoneEvent event) {
+    public void onRedstone(BlockRedstoneEvent event) {
         if (!RedProtect.getInstance().isRedstone()) event.setNewCurrent(0);
         if (event.getNewCurrent() == 0) return;
         Location location = event.getBlock().getLocation();
@@ -52,44 +51,43 @@ public class RedstoneListener implements Listener {
         }
     }
 
-    public static int increaseState(@Nonnull Chunk chunk) {
+    public static int increaseState(Chunk chunk) {
         return setState(chunk, getState(chunk) + 1);
     }
 
-    public static int decreaseState(@Nonnull Chunk chunk) {
+    public static int decreaseState(Chunk chunk) {
         return setState(chunk, getState(chunk) - 1);
     }
 
-    public static int setState(@Nonnull Chunk chunk, int state) {
+    public static int setState(Chunk chunk, int state) {
         if (state <= 0) CHUNK_STATES.remove(chunk);
         else CHUNK_STATES.put(chunk, state);
         return getState(chunk);
     }
 
-    public static int getState(@Nonnull Chunk chunk) {
+    public static int getState(Chunk chunk) {
         return CHUNK_STATES.getOrDefault(chunk, 0);
     }
 
-    public static int increaseState(@Nonnull Plot plot) {
+    public static int increaseState(Plot plot) {
         return setState(plot, getState(plot) + 1);
     }
 
-    public static int decreaseState(@Nonnull Plot plot) {
+    public static int decreaseState(Plot plot) {
         return setState(plot, getState(plot) - 1);
     }
 
-    public static int setState(@Nonnull Plot plot, int state) {
+    public static int setState(Plot plot, int state) {
         if (state <= 0) PLOT_STATES.remove(plot);
         else PLOT_STATES.put(plot, state);
         return getState(plot);
     }
 
-    public static int getState(@Nonnull Plot plot) {
+    public static int getState(Plot plot) {
         return PLOT_STATES.getOrDefault(plot, 0);
     }
 
-    @Nullable
-    private static Plot plot(@Nonnull Location location) {
+    private static Plot plot(Location location) {
         if (location.getWorld() == null) return null;
         return Plot.getPlot(com.plotsquared.core.location.Location.at(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
     }
