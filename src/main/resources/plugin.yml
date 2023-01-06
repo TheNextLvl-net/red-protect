@@ -4,4 +4,4 @@ version: "2.0.0"
 api-version: "1.19"
 website: "https://www.thenextlvl.net"
 author: "NonSwag"
-depend: ["PlotSquared"]
+depend: ["PlotSquared", "TNLListener"]
