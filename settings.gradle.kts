@@ -1,2 +1,2 @@
-rootProject.name = "redprotect"
+rootProject.name = "red-protect"
 
