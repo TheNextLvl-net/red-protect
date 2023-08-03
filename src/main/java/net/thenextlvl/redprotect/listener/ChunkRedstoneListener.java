@@ -26,13 +26,15 @@ public class ChunkRedstoneListener implements Listener {
         if (event.getNewCurrent() == 0) return;
         var location = event.getBlock().getLocation();
         Chunk chunk = location.getChunk();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(chunk), 300);
-        if (increaseState(chunk) < 5000) return;
+        var time = RedProtect.config().clockDisableTime();
+        var updates = RedProtect.config().updatesPerState();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(chunk), time);
+        if (increaseState(chunk) < updates) return;
         event.setNewCurrent(0);
         if (BLOCKED_CHUNKS.contains(chunk)) return;
         RedProtect.broadcastMalicious(location, null);
         BLOCKED_CHUNKS.add(chunk);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_CHUNKS.remove(chunk), 300);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_CHUNKS.remove(chunk), time);
     }
 
     public static int increaseState(Chunk chunk) {

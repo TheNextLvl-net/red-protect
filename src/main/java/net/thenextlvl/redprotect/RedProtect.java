@@ -5,12 +5,14 @@ import core.api.file.format.GsonFile;
 import core.api.placeholder.Placeholder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import net.thenextlvl.redprotect.listener.AreaRedstoneListener;
 import net.thenextlvl.redprotect.listener.ChunkRedstoneListener;
 import net.thenextlvl.redprotect.listener.GeneralRedstoneListener;
 import net.thenextlvl.redprotect.listener.PlotRedstoneListener;
 import net.thenextlvl.redprotect.util.Config;
 import net.thenextlvl.redprotect.util.Messages;
+import net.thenextlvl.redprotect.util.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -23,16 +25,18 @@ public class RedProtect extends JavaPlugin {
     @Getter
     @Setter
     private static boolean redstone = true;
+    @Getter
+    @Accessors(fluent = true)
     private static final Config config = new GsonFile<>(
-            new File("plugin/RedProtect/config.json"),
-            new Config(true, 18, 5000)
+            new File("plugins/RedProtect/config.json"),
+            new Config(true, 18, 100, 300, 5000)
     ) {{
         if (!getFile().exists()) save();
     }}.getRoot();
 
     @Override
     public void onLoad() {
-        Messages.init();
+        Placeholders.init();
     }
 
     @Override
@@ -46,10 +50,10 @@ public class RedProtect extends JavaPlugin {
             manager.registerEvents(new PlotRedstoneListener(this), this);
 
         if (config.lagDisableRedstone()) Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
-            if (Bukkit.getAverageTickTime() <= config.disableRedstoneTPS() && isRedstone()) {
+            if (Bukkit.getTPS()[0] <= config.disableRedstoneTPS() && isRedstone()) {
                 setRedstone(false);
                 broadcastMeasure();
-            } else if (Bukkit.getAverageTickTime() > config.disableRedstoneTPS() && !isRedstone()) {
+            } else if (Bukkit.getTPS()[0] > config.disableRedstoneTPS() && !isRedstone()) {
                 setRedstone(true);
                 broadcastMeasure();
             }
@@ -75,8 +79,10 @@ public class RedProtect extends JavaPlugin {
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.hasPermission("redclock.notify") || isRedstone())
                 .forEach(player -> {
-                    player.sendRichMessage(Messages.DETECTED_REDSTONE_CLOCK.message(player.locale(), placeholder));
-                    player.sendRichMessage(Messages.CLICK_TO_TELEPORT.message(player.locale(), Placeholder.of("position", position)));
+                    var positionPlaceholder = Placeholder.<CommandSender>of("position", position);
+                    player.sendRichMessage(Messages.DETECTED_REDSTONE_CLOCK.message(player.locale(),
+                            placeholder, positionPlaceholder));
+                    player.sendRichMessage(Messages.CLICK_TO_TELEPORT.message(player.locale(), positionPlaceholder));
                 });
         if (plot == null || plot.getOwner() == null) return;
         var player = Bukkit.getPlayer(plot.getOwner());

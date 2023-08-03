@@ -29,13 +29,15 @@ public class PlotRedstoneListener implements Listener {
         var location = event.getBlock().getLocation();
         var plot = plot(location);
         if (plot == null) return;
-        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(plot), 300);
-        if (increaseState(plot) < 5000) return;
+        var time = RedProtect.config().clockDisableTime();
+        var updates = RedProtect.config().updatesPerState();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(plot), time);
+        if (increaseState(plot) < updates) return;
         event.setNewCurrent(0);
         if (BLOCKED_PLOTS.contains(plot)) return;
         RedProtect.broadcastMalicious(location, plot);
         BLOCKED_PLOTS.add(plot);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_PLOTS.remove(plot), 300);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_PLOTS.remove(plot), time);
     }
 
     public static int increaseState(Plot plot) {

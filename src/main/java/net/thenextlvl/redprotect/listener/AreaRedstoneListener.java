@@ -29,13 +29,15 @@ public class AreaRedstoneListener implements Listener {
         var location = event.getBlock().getLocation();
         var area = area(location);
         if (area == null) return;
-        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(area), 300);
-        if (increaseState(area) < 5000) return;
+        long time = RedProtect.config().clockDisableTime();
+        long updates = RedProtect.config().updatesPerState();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(area), time);
+        if (increaseState(area) < updates) return;
         event.setNewCurrent(0);
         if (BLOCKED_AREAS.contains(area)) return;
         RedProtect.broadcastMalicious(location, null);
         BLOCKED_AREAS.add(area);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_AREAS.remove(area), 300);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_AREAS.remove(area), time);
     }
 
     public static int increaseState(Area area) {

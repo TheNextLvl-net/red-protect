@@ -19,7 +19,7 @@ public class Messages {
     public static final MessageKey<CommandSender> DETECTED_REDSTONE_CLOCK = new MessageKey<>("detected-redstone-clock", FORMATTER);
     public static final MessageKey<CommandSender> CLICK_TO_TELEPORT = new MessageKey<>("click-to-teleport", FORMATTER);
 
-    public static void init() {
+    static {
         initRoot();
         initEnglish();
         initGerman();
@@ -27,7 +27,7 @@ public class Messages {
 
     private static void initRoot() {
         var file = MessageFile.ROOT;
-        file.setDefault(PREFIX, "<white>RedProtect <gray>»<reset>");
+        file.setDefault(PREFIX, "<white>RedProtect <dark_gray>»<reset>");
         file.save();
     }
 
@@ -39,7 +39,7 @@ public class Messages {
                 "%prefix% <red>To prevent further lag redstone is disabled now");
         file.setDefault(REDSTONE_DISABLED_PLOT, "%prefix% <red>Redstone got temporarily disabled on your plot " +
                 "<dark_gray>(<dark_red>%plot%<dark_gray>)");
-        file.setDefault(DETECTED_REDSTONE_CLOCK, "%prefix% <red>Detected a malicious redstone clock at " +
+        file.setDefault(DETECTED_REDSTONE_CLOCK, "%prefix% <red>Detected a redstone clock at " +
                 "<dark_red>%position%");
         file.setDefault(CLICK_TO_TELEPORT, "%prefix% <hover:show_text:\"<gray>Click to teleport\">" +
                 "<click:run_command:\"/tp %position%\"><red>Click to teleport to the position");

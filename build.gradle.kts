@@ -44,4 +44,7 @@ bukkit {
     website = "https://thenextlvl.net"
     authors = listOf("NonSwag")
     softDepend = listOf("PlotSquared", "Protect")
+    permissions {
+        register("redclock.notify")
+    }
 }
