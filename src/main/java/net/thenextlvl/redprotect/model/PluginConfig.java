@@ -1,8 +1,8 @@
-package net.thenextlvl.redprotect.util;
+package net.thenextlvl.redprotect.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public record Config(
+public record PluginConfig(
         @SerializedName("enable-area-protection") boolean areaProtection,
         @SerializedName("enable-chunk-protection") boolean chunkProtection,
         @SerializedName("enable-plot-protection") boolean plotProtection,
