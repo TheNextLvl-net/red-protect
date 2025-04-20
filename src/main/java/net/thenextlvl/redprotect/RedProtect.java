@@ -5,7 +5,7 @@ import core.file.format.GsonFile;
 import core.io.IO;
 import net.thenextlvl.redprotect.listener.AreaRedstoneListener;
 import net.thenextlvl.redprotect.listener.ChunkRedstoneListener;
-import net.thenextlvl.redprotect.listener.GeneralRedstoneListener;
+import net.thenextlvl.redprotect.listener.RedstoneListener;
 import net.thenextlvl.redprotect.listener.PlotRedstoneListener;
 import net.thenextlvl.redprotect.util.Config;
 import net.thenextlvl.redprotect.util.Messages;
@@ -38,7 +38,7 @@ public class RedProtect extends JavaPlugin {
 
     public void registerListeners() {
         getServer().getPluginManager().registerEvents(new ChunkRedstoneListener(this), this);
-        getServer().getPluginManager().registerEvents(new GeneralRedstoneListener(this), this);
+        getServer().getPluginManager().registerEvents(new RedstoneListener(this), this);
         if (getServer().getPluginManager().getPlugin("Protect") != null)
             getServer().getPluginManager().registerEvents(new AreaRedstoneListener(this), this);
         if (getServer().getPluginManager().getPlugin("PlotSquared") != null)

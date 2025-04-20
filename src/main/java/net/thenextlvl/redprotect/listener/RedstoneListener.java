@@ -6,10 +6,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
-public class GeneralRedstoneListener implements Listener {
+public class RedstoneListener implements Listener {
     private final RedProtect plugin;
 
-    public GeneralRedstoneListener(RedProtect plugin) {
+    public RedstoneListener(RedProtect plugin) {
         this.plugin = plugin;
     }
 
