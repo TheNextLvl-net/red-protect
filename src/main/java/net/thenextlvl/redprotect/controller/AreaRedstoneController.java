@@ -4,8 +4,10 @@ import net.thenextlvl.protect.area.Area;
 import net.thenextlvl.protect.area.AreaProvider;
 import net.thenextlvl.redprotect.RedProtect;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class AreaRedstoneController extends AbstractRedstoneController<Area> {
     private final AreaProvider areaProvider;
@@ -13,6 +15,16 @@ public class AreaRedstoneController extends AbstractRedstoneController<Area> {
     public AreaRedstoneController(RedProtect plugin) {
         super(plugin);
         this.areaProvider = Objects.requireNonNull(plugin.getServer().getServicesManager().load(AreaProvider.class));
+    }
+
+    @Override
+    public String toString(Area area) {
+        return area.getName();
+    }
+
+    @Override
+    public Optional<Player> getOwner(Area area) {
+        return area.getOwner().map(plugin.getServer()::getPlayer);
     }
 
     @Override
