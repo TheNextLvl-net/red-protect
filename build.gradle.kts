@@ -25,7 +25,7 @@ dependencies {
     compileOnly("com.sk89q.worldedit:worldedit-core:7.3.0-SNAPSHOT")
 
     implementation("net.thenextlvl.core:files:2.0.2")
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.34"))
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.52"))
 }
 
 java {
