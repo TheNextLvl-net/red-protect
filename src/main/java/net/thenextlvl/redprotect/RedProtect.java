@@ -2,6 +2,7 @@ package net.thenextlvl.redprotect;
 
 import com.plotsquared.core.plot.Plot;
 import core.file.format.GsonFile;
+import core.i18n.file.ComponentBundle;
 import core.io.IO;
 import net.thenextlvl.redprotect.api.AreaRedstoneController;
 import net.thenextlvl.redprotect.api.ChunkRedstoneController;
@@ -22,6 +23,16 @@ public class RedProtect extends JavaPlugin {
     public final Config config = new GsonFile<>(IO.of(getDataFolder(), "config.json"), new Config(
             true, false, true, true, 18, TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(15), 5000
     )).saveIfAbsent().getRoot();
+
+    private final File translations = new File(getDataFolder(), "translations");
+    private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
+            audience instanceof Player player ? player.locale() : Locale.US)
+            .register("redprotect", Locale.US)
+            .register("redprotect_german", Locale.GERMANY)
+            .miniMessage(bundle -> MiniMessage.builder().tags(TagResolver.resolver(
+                    TagResolver.standard(),
+                    Placeholder.component("prefix", bundle.component(Locale.US, "prefix"))
+            )).build());
     public boolean redstone = true;
 
     @Override
@@ -52,33 +63,16 @@ public class RedProtect extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    @SuppressWarnings("unchecked")
-    public void broadcastMeasure() {
+    private void broadcastMeasure(boolean enabled) {
+        var message = enabled ? "redstone.enabled" : "redstone.disabled";
+        var resolver = Formatter.number("tps", config.disableRedstoneTPS());
         getServer().getOnlinePlayers().stream()
                 .filter(player -> player.hasPermission("redclock.notify"))
-                .forEach(player -> {
-                    var tps = Placeholder.<CommandSender>of("tps", config.disableRedstoneTPS());
-                    if (redstone) player.sendRichMessage(Messages.REDSTONE_ENABLED.message(player.locale(), tps));
-                    else player.sendRichMessage(Messages.REDSTONE_DISABLED.message(player.locale(), tps));
-                });
+                .forEach(player -> bundle().sendMessage(player, message, resolver));
+        if (config.printToConsole()) bundle().sendMessage(getServer().getConsoleSender(), message, resolver);
     }
 
-    @SuppressWarnings("unchecked")
-    public void broadcastMalicious(Location location, @Nullable Plot plot) {
-        var position = location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ();
-        var plotPosition = plot != null ? plot.getAlias().isEmpty() ? "Plot " + plot.getId() : plot.getAlias() : position;
-        var placeholder = Placeholder.<CommandSender>of("plot", plotPosition);
-        getServer().getOnlinePlayers().stream()
-                .filter(player -> player.hasPermission("redclock.notify") || redstone)
-                .forEach(player -> {
-                    var positionPlaceholder = Placeholder.<CommandSender>of("position", position);
-                    player.sendRichMessage(Messages.DETECTED_REDSTONE_CLOCK.message(player.locale(),
-                            placeholder, positionPlaceholder));
-                    player.sendRichMessage(Messages.CLICK_TO_TELEPORT.message(player.locale(), positionPlaceholder));
-                });
-        if (plot == null || plot.getOwner() == null) return;
-        var player = getServer().getPlayer(plot.getOwner());
-        if (player == null) return;
-        player.sendRichMessage(Messages.REDSTONE_DISABLED_PLOT.message(player.locale(), placeholder));
+    public ComponentBundle bundle() {
+        return bundle;
     }
 }

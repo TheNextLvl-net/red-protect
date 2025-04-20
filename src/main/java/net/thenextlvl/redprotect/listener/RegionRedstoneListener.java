@@ -38,4 +38,17 @@ public class RegionRedstoneListener<T> implements Listener {
                     controller.setBlocked(area, false), time, TimeUnit.MILLISECONDS);
         });
     }
+
+    private void broadcastWarning(Location location, @Nullable T region) {
+        var resolver = Placeholder.parsed("region", controller.toString(region));
+        var world = Placeholder.parsed("world", location.getWorld().getName());
+        var x = Formatter.number("x", location.getBlockX());
+        var y = Formatter.number("y", location.getBlockY());
+        var z = Formatter.number("z", location.getBlockZ());
+        plugin.getServer().getOnlinePlayers().stream()
+                .filter(player -> player.hasPermission("redclock.notify"))
+                .forEach(player -> plugin.bundle().sendMessage(player, "redstone.warning", resolver, world, x, y, z));
+        controller.getOwner(region).ifPresent(player ->
+                plugin.bundle().sendMessage(player, "redstone.disabled.region", resolver, world, x, y, z));
+    }
 }
