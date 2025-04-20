@@ -3,14 +3,16 @@ package net.thenextlvl.redprotect;
 import com.plotsquared.core.plot.Plot;
 import core.file.format.GsonFile;
 import core.io.IO;
-import net.thenextlvl.redprotect.listener.AreaRedstoneListener;
-import net.thenextlvl.redprotect.listener.ChunkRedstoneListener;
+import net.thenextlvl.redprotect.api.AreaRedstoneController;
+import net.thenextlvl.redprotect.api.ChunkRedstoneController;
+import net.thenextlvl.redprotect.api.PlotRedstoneController;
 import net.thenextlvl.redprotect.listener.RedstoneListener;
-import net.thenextlvl.redprotect.listener.PlotRedstoneListener;
+import net.thenextlvl.redprotect.listener.RegionRedstoneListener;
 import net.thenextlvl.redprotect.util.Config;
 import net.thenextlvl.redprotect.util.Messages;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RedProtect extends JavaPlugin {
     public final Config config = new GsonFile<>(IO.of(getDataFolder(), "config.json"), new Config(
-            true, 18, TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(15), 5000
+            true, false, true, true, 18, TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(15), 5000
     )).saveIfAbsent().getRoot();
     public boolean redstone = true;
 
@@ -37,12 +39,17 @@ public class RedProtect extends JavaPlugin {
     }
 
     public void registerListeners() {
-        getServer().getPluginManager().registerEvents(new ChunkRedstoneListener(this), this);
-        getServer().getPluginManager().registerEvents(new RedstoneListener(this), this);
-        if (getServer().getPluginManager().getPlugin("Protect") != null)
-            getServer().getPluginManager().registerEvents(new AreaRedstoneListener(this), this);
-        if (getServer().getPluginManager().getPlugin("PlotSquared") != null)
-            getServer().getPluginManager().registerEvents(new PlotRedstoneListener(this), this);
+        if (config.chunkProtection())
+            registerListener(new RegionRedstoneListener<>(this, new ChunkRedstoneController(this)));
+        if (config.areaProtection() && getServer().getPluginManager().getPlugin("Protect") != null)
+            registerListener(new RegionRedstoneListener<>(this, new AreaRedstoneController(this)));
+        if (config.plotProtection() && getServer().getPluginManager().getPlugin("PlotSquared") != null)
+            registerListener(new RegionRedstoneListener<>(this, new PlotRedstoneController(this)));
+        registerListener(new RedstoneListener(this));
+    }
+
+    private void registerListener(Listener listener) {
+        getServer().getPluginManager().registerEvents(listener, this);
     }
 
     @SuppressWarnings("unchecked")

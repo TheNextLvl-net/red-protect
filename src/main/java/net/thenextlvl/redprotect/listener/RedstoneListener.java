@@ -15,6 +15,6 @@ public class RedstoneListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onRedstone(BlockRedstoneEvent event) {
-        if (!plugin.redstone) event.setNewCurrent(0);
+        if (!plugin.redstone) event.setNewCurrent(event.getOldCurrent());
     }
 }
