@@ -1,7 +1,11 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+import net.minecrell.pluginyml.paper.PaperPluginDescription
+
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    id("com.gradleup.shadow") version "9.0.0-beta12"
+    id("io.papermc.hangar-publish-plugin") version "0.1.3"
+    id("de.eldoria.plugin-yml.paper") version "0.7.1"
 }
 
 group = "net.thenextlvl.redprotect"
@@ -18,33 +22,65 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.26")
     compileOnly("net.thenextlvl.protect:api:1.0.1")
     compileOnly("net.thenextlvl.core:annotations:1.0.0")
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("com.sk89q.worldedit:worldedit-core:7.3.0-SNAPSHOT")
 
-    implementation("net.thenextlvl.core:api:3.1.12")
+    implementation("net.thenextlvl.core:files:2.0.2")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.34"))
 
     annotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+tasks.compileJava {
+    options.release.set(21)
 }
 
 tasks.shadowJar {
     minimize()
 }
 
-bukkit {
+paper {
     name = "RedProtect"
     main = "net.thenextlvl.redprotect.RedProtect"
-    apiVersion = "1.19"
+    apiVersion = "1.21"
     website = "https://thenextlvl.net"
     authors = listOf("NonSwag")
-    softDepend = listOf("PlotSquared", "Protect")
+    serverDependencies {
+        register("PlotSquared") {
+            required = false
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+        register("Protect") {
+            required = false
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+    }
     permissions {
         register("redclock.notify")
+    }
+}
+
+val versionString: String = project.version as String
+val isRelease: Boolean = !versionString.contains("-pre")
+
+val versions: List<String> = (property("gameVersions") as String)
+    .split(",")
+    .map { it.trim() }
+
+hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
+    publications.register("plugin") {
+        id.set("RedProtect")
+        version.set(versionString)
+        channel.set(if (isRelease) "Release" else "Snapshot")
+        apiKey.set(System.getenv("HANGAR_API_TOKEN"))
+        platforms.register(Platforms.PAPER) {
+            jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+            platformVersions.set(versions)
+        }
     }
 }
