@@ -1,22 +1,24 @@
 package net.thenextlvl.redprotect;
 
-import com.plotsquared.core.plot.Plot;
 import core.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
 import core.io.IO;
-import net.thenextlvl.redprotect.api.AreaRedstoneController;
-import net.thenextlvl.redprotect.api.ChunkRedstoneController;
-import net.thenextlvl.redprotect.api.PlotRedstoneController;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.thenextlvl.redprotect.controller.AreaRedstoneController;
+import net.thenextlvl.redprotect.controller.ChunkRedstoneController;
+import net.thenextlvl.redprotect.controller.PlotRedstoneController;
 import net.thenextlvl.redprotect.listener.RedstoneListener;
 import net.thenextlvl.redprotect.listener.RegionRedstoneListener;
-import net.thenextlvl.redprotect.util.Messages;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import net.thenextlvl.redprotect.model.PluginConfig;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class RedProtect extends JavaPlugin {
@@ -39,17 +41,14 @@ public class RedProtect extends JavaPlugin {
     public void onEnable() {
         registerListeners();
         if (config.lagDisableRedstone()) getServer().getAsyncScheduler().runAtFixedRate(this, task -> {
-            if (getServer().getTPS()[0] <= config.disableRedstoneTPS() && redstone) {
-                redstone = false;
-                broadcastMeasure();
-            } else if (getServer().getTPS()[0] > config.disableRedstoneTPS() && !redstone) {
-                redstone = true;
-                broadcastMeasure();
-            }
+            if (getServer().getTPS()[0] <= config.disableRedstoneTPS() && redstone)
+                broadcastMeasure(redstone = false);
+            else if (getServer().getTPS()[0] > config.disableRedstoneTPS() && !redstone)
+                broadcastMeasure(redstone = true);
         }, config.lagDetectInterval(), config.lagDetectInterval(), TimeUnit.MILLISECONDS);
     }
 
-    public void registerListeners() {
+    private void registerListeners() {
         if (config.chunkProtection())
             registerListener(new RegionRedstoneListener<>(this, new ChunkRedstoneController(this)));
         if (config.areaProtection() && getServer().getPluginManager().getPlugin("Protect") != null)

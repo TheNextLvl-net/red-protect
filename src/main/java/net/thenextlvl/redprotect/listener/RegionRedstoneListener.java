@@ -1,11 +1,15 @@
 package net.thenextlvl.redprotect.listener;
 
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.redprotect.RedProtect;
-import net.thenextlvl.redprotect.api.RedstoneController;
+import net.thenextlvl.redprotect.controller.RedstoneController;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,21 +25,21 @@ public class RegionRedstoneListener<T> implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRedstone(BlockRedstoneEvent event) {
         if (event.getNewCurrent() == event.getOldCurrent()) return;
-        controller.startTransaction(event.getBlock().getLocation(), (area, location) -> {
+        controller.startTransaction(event.getBlock().getLocation(), (region, location) -> {
             var time = plugin.config.clockDisableTime();
 
             plugin.getServer().getAsyncScheduler().runDelayed(plugin, task ->
-                    controller.decreaseState(area), time, TimeUnit.MILLISECONDS);
+                    controller.decreaseState(region), time, TimeUnit.MILLISECONDS);
 
-            if (controller.increaseState(area) < controller.getMaxUpdates()) return;
+            if (controller.increaseState(region) < controller.getMaxUpdates()) return;
             event.setNewCurrent(event.getOldCurrent());
 
-            if (controller.isBlocked(area)) return;
-            plugin.broadcastMalicious(location, null);
+            if (controller.isBlocked(region)) return;
+            broadcastWarning(location, region);
 
-            controller.setBlocked(area, true);
+            controller.setBlocked(region, true);
             plugin.getServer().getAsyncScheduler().runDelayed(plugin, task ->
-                    controller.setBlocked(area, false), time, TimeUnit.MILLISECONDS);
+                    controller.setBlocked(region, false), time, TimeUnit.MILLISECONDS);
         });
     }
 

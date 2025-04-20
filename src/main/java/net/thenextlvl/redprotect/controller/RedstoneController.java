@@ -1,7 +1,9 @@
 package net.thenextlvl.redprotect.controller;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public interface RedstoneController<T> {
@@ -24,4 +26,8 @@ public interface RedstoneController<T> {
     }
 
     void startTransaction(Location location, BiConsumer<T, Location> transaction);
+
+    String toString(T region);
+
+    Optional<Player> getOwner(T region);
 }

@@ -6,6 +6,7 @@ public record PluginConfig(
         @SerializedName("enable-area-protection") boolean areaProtection,
         @SerializedName("enable-chunk-protection") boolean chunkProtection,
         @SerializedName("enable-plot-protection") boolean plotProtection,
+        @SerializedName("print-messages-to-console") boolean printToConsole,
         @SerializedName("lag-disable-redstone") boolean lagDisableRedstone,
         @SerializedName("disable-redstone-tps") int disableRedstoneTPS,
         @SerializedName("lag-detect-interval-millis") long lagDetectInterval,
