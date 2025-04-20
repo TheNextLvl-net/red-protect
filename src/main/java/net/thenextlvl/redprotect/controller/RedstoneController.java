@@ -17,8 +17,8 @@ public interface RedstoneController<T> {
 
     void setBlocked(T region, boolean blocked);
 
-    default int decreaseState(T region) {
-        return setState(region, getState(region) - 1);
+    default void decreaseState(T region) {
+        setState(region, getState(region) - 1);
     }
 
     default int increaseState(T region) {
