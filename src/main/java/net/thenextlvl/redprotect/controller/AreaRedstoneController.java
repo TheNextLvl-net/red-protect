@@ -1,4 +1,4 @@
-package net.thenextlvl.redprotect.api;
+package net.thenextlvl.redprotect.controller;
 
 import net.thenextlvl.protect.area.Area;
 import net.thenextlvl.protect.area.AreaProvider;

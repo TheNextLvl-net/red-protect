@@ -1,4 +1,4 @@
-package net.thenextlvl.redprotect.api;
+package net.thenextlvl.redprotect.controller;
 
 import net.thenextlvl.redprotect.RedProtect;
 import org.bukkit.Location;
