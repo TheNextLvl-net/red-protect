@@ -13,11 +13,13 @@ version = "2.0.0"
 
 repositories {
     mavenCentral()
-    maven("https://repo.thenextlvl.net/releases")
+    maven("https://maven.enginehub.org/repo/")
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.thenextlvl.net/releases")
 }
 
 dependencies {
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
 
