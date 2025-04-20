@@ -11,6 +11,6 @@ public record PluginConfig(
         @SerializedName("disable-redstone-tps") int disableRedstoneTPS,
         @SerializedName("lag-detect-interval-millis") long lagDetectInterval,
         @SerializedName("clock-disable-time-millis") long clockDisableTime,
-        @SerializedName("updates-per-state") int updatesPerState
+        @SerializedName("region-update-limit") int regionUpdateLimit
 ) {
 }

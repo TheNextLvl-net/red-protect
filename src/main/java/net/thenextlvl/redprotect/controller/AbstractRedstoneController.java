@@ -17,7 +17,7 @@ public abstract class AbstractRedstoneController<T> implements RedstoneControlle
     protected final RedProtect plugin;
 
     protected AbstractRedstoneController(RedProtect plugin) {
-        this.maxUpdates = plugin.config.updatesPerState();
+        this.maxUpdates = plugin.config.regionUpdateLimit();
         this.plugin = plugin;
     }
 
