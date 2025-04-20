@@ -21,7 +21,6 @@ repositories {
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.26")
     compileOnly("net.thenextlvl.protect:api:1.0.1")
-    compileOnly("net.thenextlvl.core:annotations:1.0.0")
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("com.sk89q.worldedit:worldedit-core:7.3.0-SNAPSHOT")
