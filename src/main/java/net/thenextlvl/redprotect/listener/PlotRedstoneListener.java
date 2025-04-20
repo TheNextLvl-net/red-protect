@@ -31,8 +31,8 @@ public class PlotRedstoneListener implements Listener {
         var location = event.getBlock().getLocation();
         var plot = plot(location);
         if (plot == null) return;
-        var time = RedProtect.config().clockDisableTime();
-        var updates = RedProtect.config().updatesPerState();
+        var time = RedProtect.config.clockDisableTime();
+        var updates = RedProtect.config.updatesPerState();
         Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(plot), time);
         if (increaseState(plot) < updates) return;
         event.setNewCurrent(0);
