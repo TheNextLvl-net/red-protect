@@ -22,7 +22,7 @@ dependencies {
     compileOnly("net.thenextlvl.protect:api:3.0.3")
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
-    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.0-SNAPSHOT")
+    compileOnly("com.sk89q.worldedit:worldedit-core:7.3.11")
 
     implementation("net.thenextlvl.core:files:2.0.2")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.34"))
