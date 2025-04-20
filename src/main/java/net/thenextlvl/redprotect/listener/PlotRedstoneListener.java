@@ -1,7 +1,6 @@
 package net.thenextlvl.redprotect.listener;
 
 import com.plotsquared.core.plot.Plot;
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.redprotect.RedProtect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,12 +15,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@RequiredArgsConstructor
 public class PlotRedstoneListener implements Listener {
     private static final HashMap<Plot, Integer> PLOT_STATES = new HashMap<>();
     private static final List<Plot> BLOCKED_PLOTS = new ArrayList<>();
 
     private final JavaPlugin plugin;
+
+    public PlotRedstoneListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onRedstone(BlockRedstoneEvent event) {

@@ -9,6 +9,6 @@ import org.bukkit.event.block.BlockRedstoneEvent;
 public class GeneralRedstoneListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onRedstone(BlockRedstoneEvent event) {
-        if (!RedProtect.isRedstone()) event.setNewCurrent(0);
+        if (!RedProtect.redstone) event.setNewCurrent(0);
     }
 }

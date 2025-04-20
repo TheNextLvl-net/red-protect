@@ -1,6 +1,5 @@
 package net.thenextlvl.redprotect.listener;
 
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.redprotect.RedProtect;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -14,20 +13,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@RequiredArgsConstructor
 public class ChunkRedstoneListener implements Listener {
     private static final HashMap<Chunk, Integer> CHUNK_STATES = new HashMap<>();
     private static final List<Chunk> BLOCKED_CHUNKS = new ArrayList<>();
 
     private final JavaPlugin plugin;
 
+    public ChunkRedstoneListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRedstone(BlockRedstoneEvent event) {
         if (event.getNewCurrent() == 0) return;
         var location = event.getBlock().getLocation();
         Chunk chunk = location.getChunk();
-        var time = RedProtect.config().clockDisableTime();
-        var updates = RedProtect.config().updatesPerState();
+        var time = RedProtect.config.clockDisableTime();
+        var updates = RedProtect.config.updatesPerState();
         Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(chunk), time);
         if (increaseState(chunk) < updates) return;
         event.setNewCurrent(0);

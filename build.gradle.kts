@@ -19,7 +19,6 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.26")
     compileOnly("net.thenextlvl.protect:api:1.0.1")
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
@@ -27,8 +26,6 @@ dependencies {
 
     implementation("net.thenextlvl.core:files:2.0.2")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.34"))
-
-    annotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
 java {

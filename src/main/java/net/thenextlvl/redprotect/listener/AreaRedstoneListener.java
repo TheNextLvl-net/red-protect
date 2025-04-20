@@ -1,6 +1,5 @@
 package net.thenextlvl.redprotect.listener;
 
-import lombok.RequiredArgsConstructor;
 import net.thenextlvl.protect.area.Area;
 import net.thenextlvl.redprotect.RedProtect;
 import org.bukkit.Bukkit;
@@ -16,12 +15,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@RequiredArgsConstructor
 public class AreaRedstoneListener implements Listener {
     private static final HashMap<Area, Integer> AREA_STATES = new HashMap<>();
     private static final List<Area> BLOCKED_AREAS = new ArrayList<>();
 
     private final JavaPlugin plugin;
+
+    public AreaRedstoneListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onRedstone(BlockRedstoneEvent event) {
