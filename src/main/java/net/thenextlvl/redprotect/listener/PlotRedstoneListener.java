@@ -2,13 +2,11 @@ package net.thenextlvl.redprotect.listener;
 
 import com.plotsquared.core.plot.Plot;
 import net.thenextlvl.redprotect.RedProtect;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -19,9 +17,9 @@ public class PlotRedstoneListener implements Listener {
     private static final HashMap<Plot, Integer> PLOT_STATES = new HashMap<>();
     private static final List<Plot> BLOCKED_PLOTS = new ArrayList<>();
 
-    private final JavaPlugin plugin;
+    private final RedProtect plugin;
 
-    public PlotRedstoneListener(JavaPlugin plugin) {
+    public PlotRedstoneListener(RedProtect plugin) {
         this.plugin = plugin;
     }
 
@@ -31,15 +29,15 @@ public class PlotRedstoneListener implements Listener {
         var location = event.getBlock().getLocation();
         var plot = plot(location);
         if (plot == null) return;
-        var time = RedProtect.config.clockDisableTime();
-        var updates = RedProtect.config.updatesPerState();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(plot), time);
+        var time = plugin.config.clockDisableTime();
+        var updates = plugin.config.updatesPerState();
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> decreaseState(plot), time);
         if (increaseState(plot) < updates) return;
         event.setNewCurrent(0);
         if (BLOCKED_PLOTS.contains(plot)) return;
-        RedProtect.broadcastMalicious(location, plot);
+        plugin.broadcastMalicious(location, plot);
         BLOCKED_PLOTS.add(plot);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_PLOTS.remove(plot), time);
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> BLOCKED_PLOTS.remove(plot), time);
     }
 
     public static int increaseState(Plot plot) {
