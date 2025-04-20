@@ -1,6 +1,7 @@
 package net.thenextlvl.redprotect.listener;
 
 import net.thenextlvl.protect.area.Area;
+import net.thenextlvl.protect.area.AreaProvider;
 import net.thenextlvl.redprotect.RedProtect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,16 +13,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.WeakHashMap;
 
 public class AreaRedstoneListener implements Listener {
-    private static final HashMap<Area, Integer> AREA_STATES = new HashMap<>();
+    private static final Map<Area, Integer> AREA_STATES = new WeakHashMap<>();
     private static final List<Area> BLOCKED_AREAS = new ArrayList<>();
+    private final AreaProvider areaProvider;
 
     private final JavaPlugin plugin;
 
     public AreaRedstoneListener(JavaPlugin plugin) {
+        this.areaProvider = Objects.requireNonNull(plugin.getServer().getServicesManager().load(AreaProvider.class));
         this.plugin = plugin;
     }
 
@@ -31,8 +36,8 @@ public class AreaRedstoneListener implements Listener {
         var location = event.getBlock().getLocation();
         var area = area(location);
         if (area == null) return;
-        long time = RedProtect.config().clockDisableTime();
-        long updates = RedProtect.config().updatesPerState();
+        var time = RedProtect.config.clockDisableTime();
+        var updates = RedProtect.config.updatesPerState();
         Bukkit.getScheduler().runTaskLater(plugin, () -> decreaseState(area), time);
         if (increaseState(area) < updates) return;
         event.setNewCurrent(0);
@@ -42,25 +47,25 @@ public class AreaRedstoneListener implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, () -> BLOCKED_AREAS.remove(area), time);
     }
 
-    public static int increaseState(Area area) {
+    public int increaseState(Area area) {
         return setState(area, getState(area) + 1);
     }
 
-    public static void decreaseState(Area area) {
+    public void decreaseState(Area area) {
         setState(area, getState(area) - 1);
     }
 
-    public static int setState(Area area, int state) {
+    public int setState(Area area, int state) {
         if (state <= 0) AREA_STATES.remove(area);
         else AREA_STATES.put(area, state);
         return getState(area);
     }
 
-    public static int getState(Area area) {
+    public int getState(Area area) {
         return AREA_STATES.getOrDefault(area, 0);
     }
 
-    private static @Nullable Area area(Location location) {
-        return location.getWorld() != null ? Area.highestArea(location) : null;
+    private @Nullable Area area(Location location) {
+        return location.getWorld() != null ? areaProvider.getArea(location) : null;
     }
 }
