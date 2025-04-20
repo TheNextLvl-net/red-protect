@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RedProtect extends JavaPlugin {
     public final PluginConfig config = new GsonFile<>(IO.of(getDataFolder(), "config.json"), new PluginConfig(
-            true, false, true, true, true, 18, TimeUnit.SECONDS.toMillis(5), TimeUnit.SECONDS.toMillis(15), 5000
+            true, true, true, true, true, 18, TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10), 250000
     )).saveIfAbsent().getRoot();
 
     private final File translations = new File(getDataFolder(), "translations");
