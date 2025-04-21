@@ -30,4 +30,6 @@ public interface RedstoneController<T> {
     String toString(T region);
 
     Optional<Player> getOwner(T region);
+
+    void notifyOwner(T region, BiConsumer<Player, String> notification);
 }

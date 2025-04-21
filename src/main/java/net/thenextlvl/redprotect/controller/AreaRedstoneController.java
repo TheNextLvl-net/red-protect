@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class AreaRedstoneController extends AbstractRedstoneController<Area> {
     private final AreaProvider areaProvider;
@@ -25,6 +26,11 @@ public class AreaRedstoneController extends AbstractRedstoneController<Area> {
     @Override
     public Optional<Player> getOwner(Area area) {
         return area.getOwner().map(plugin.getServer()::getPlayer);
+    }
+
+    @Override
+    public void notifyOwner(Area area, BiConsumer<Player, String> notification) {
+        getOwner(area).ifPresent(player -> notification.accept(player, "redstone.disabled.area"));
     }
 
     @Override
