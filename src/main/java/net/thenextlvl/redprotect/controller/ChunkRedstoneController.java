@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class ChunkRedstoneController extends AbstractRedstoneController<Chunk> {
     public ChunkRedstoneController(RedProtect plugin) {
@@ -20,6 +21,10 @@ public class ChunkRedstoneController extends AbstractRedstoneController<Chunk> {
     @Override
     public Optional<Player> getOwner(Chunk region) {
         return Optional.empty();
+    }
+
+    @Override
+    public void notifyOwner(Chunk area, BiConsumer<Player, String> notification) {
     }
 
     @Override

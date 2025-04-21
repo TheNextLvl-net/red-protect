@@ -1,16 +1,20 @@
 package net.thenextlvl.redprotect.listener;
 
+import net.kyori.adventure.text.event.ClickCallback;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.thenextlvl.redprotect.RedProtect;
 import net.thenextlvl.redprotect.controller.RedstoneController;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class RegionRedstoneListener<T> implements Listener {
@@ -49,10 +53,15 @@ public class RegionRedstoneListener<T> implements Listener {
         var x = Formatter.number("x", location.getBlockX());
         var y = Formatter.number("y", location.getBlockY());
         var z = Formatter.number("z", location.getBlockZ());
+        var teleport = Placeholder.styling("teleport", ClickEvent.callback(audience -> {
+            if (!(audience instanceof Player player)) return;
+            player.teleportAsync(location);
+        }, builder -> builder.lifetime(Duration.ofHours(1)).uses(ClickCallback.UNLIMITED_USES)));
         plugin.getServer().getOnlinePlayers().stream()
                 .filter(player -> player.hasPermission("redclock.notify"))
-                .forEach(player -> plugin.bundle().sendMessage(player, "redstone.warning", resolver, world, x, y, z));
-        controller.getOwner(region).ifPresent(player ->
-                plugin.bundle().sendMessage(player, "redstone.disabled.region", resolver, world, x, y, z));
+                .forEach(player -> plugin.bundle().sendMessage(player, "redstone.warning",
+                        teleport, resolver, world, x, y, z));
+        controller.notifyOwner(region, (player, message) ->
+                plugin.bundle().sendMessage(player, message, resolver, world, x, y, z));
     }
 }
