@@ -23,7 +23,7 @@ dependencies {
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
 
-    compileOnly("net.thenextlvl.core:nbt:2.3.1")
+    compileOnly("net.thenextlvl.core:nbt:2.3.2")
     compileOnly("net.thenextlvl.protect:api:3.0.3")
 
     implementation("net.thenextlvl.core:files:2.0.2")
