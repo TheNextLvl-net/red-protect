@@ -3,21 +3,18 @@ package net.thenextlvl.redprotect;
 import core.file.format.GsonFile;
 import core.i18n.file.ComponentBundle;
 import core.io.IO;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.thenextlvl.redprotect.controller.AreaRedstoneController;
 import net.thenextlvl.redprotect.controller.ChunkRedstoneController;
 import net.thenextlvl.redprotect.controller.PlotRedstoneController;
 import net.thenextlvl.redprotect.listener.RedstoneListener;
 import net.thenextlvl.redprotect.listener.RegionRedstoneListener;
 import net.thenextlvl.redprotect.model.PluginConfig;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -26,15 +23,13 @@ public class RedProtect extends JavaPlugin {
             true, true, true, true, true, 18, TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10), 250000
     )).saveIfAbsent().getRoot();
 
-    private final File translations = new File(getDataFolder(), "translations");
-    private final ComponentBundle bundle = new ComponentBundle(translations, audience ->
-            audience instanceof Player player ? player.locale() : Locale.US)
-            .register("redprotect", Locale.US)
-            .register("redprotect_german", Locale.GERMANY)
-            .miniMessage(bundle -> MiniMessage.builder().tags(TagResolver.resolver(
-                    TagResolver.standard(),
-                    Placeholder.component("prefix", bundle.component(Locale.US, "prefix"))
-            )).build());
+    private final Key key = Key.key("redprotect", "translations");
+    private final Path translations = getDataPath().resolve("translations");
+    private final ComponentBundle bundle = ComponentBundle.builder(key, translations)
+            .placeholder("prefix", "prefix")
+            .resource("redprotect", Locale.US)
+            .resource("redprotect_german", Locale.GERMANY)
+            .build();
     public boolean redstone = true;
 
     @Override
