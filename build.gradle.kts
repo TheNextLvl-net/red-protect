@@ -27,7 +27,7 @@ dependencies {
     compileOnly("net.thenextlvl.protect:api:3.0.3")
 
     implementation("net.thenextlvl.core:files:3.0.0")
-    implementation("net.thenextlvl.core:i18n:1.0.21")
+    implementation("net.thenextlvl.core:i18n:3.2.0")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.52"))
 }
 
