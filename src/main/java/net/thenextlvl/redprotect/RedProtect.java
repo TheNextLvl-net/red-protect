@@ -27,8 +27,8 @@ public class RedProtect extends JavaPlugin {
     private final Path translations = getDataPath().resolve("translations");
     private final ComponentBundle bundle = ComponentBundle.builder(key, translations)
             .placeholder("prefix", "prefix")
-            .resource("redprotect", Locale.US)
-            .resource("redprotect_german", Locale.GERMANY)
+            .resource("redprotect.properties", Locale.US)
+            .resource("redprotect_german.properties", Locale.GERMANY)
             .build();
     public boolean redstone = true;
 
