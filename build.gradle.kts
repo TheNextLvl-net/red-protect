@@ -46,7 +46,7 @@ tasks.shadowJar {
 paper {
     name = "RedProtect"
     main = "net.thenextlvl.redprotect.RedProtect"
-    apiVersion = "1.21"
+    apiVersion = "1.21.4"
     website = "https://thenextlvl.net"
     authors = listOf("NonSwag")
     serverDependencies {
