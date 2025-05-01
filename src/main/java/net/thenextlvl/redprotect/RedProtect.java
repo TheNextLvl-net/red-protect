@@ -11,6 +11,8 @@ import net.thenextlvl.redprotect.controller.PlotRedstoneController;
 import net.thenextlvl.redprotect.listener.RedstoneListener;
 import net.thenextlvl.redprotect.listener.RegionRedstoneListener;
 import net.thenextlvl.redprotect.model.PluginConfig;
+import net.thenextlvl.redprotect.version.PluginVersionChecker;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,6 +28,9 @@ public class RedProtect extends JavaPlugin {
     )).saveIfAbsent().getRoot();
     public final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
+    private final Metrics metrics = new Metrics(this, 25699);
+    private final PluginVersionChecker versionChecker = new PluginVersionChecker(this);
+
     private final Key key = Key.key("redprotect", "translations");
     private final Path translations = getDataPath().resolve("translations");
     private final ComponentBundle bundle = ComponentBundle.builder(key, translations)
@@ -36,6 +41,11 @@ public class RedProtect extends JavaPlugin {
     public boolean redstone = true;
 
     @Override
+    public void onLoad() {
+        versionChecker.checkVersion();
+    }
+
+    @Override
     public void onEnable() {
         registerListeners();
         if (config.lagDisableRedstone()) executor.scheduleAtFixedRate(() -> {
@@ -44,6 +54,11 @@ public class RedProtect extends JavaPlugin {
             else if (getServer().getTPS()[0] > config.disableRedstoneTPS() && !redstone)
                 broadcastMeasure(redstone = true);
         }, config.lagDetectInterval(), config.lagDetectInterval(), TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void onDisable() {
+        metrics.shutdown();
     }
 
     private void registerListeners() {
