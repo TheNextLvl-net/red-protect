@@ -32,18 +32,16 @@ public class RegionRedstoneListener<T> implements Listener {
         controller.startTransaction(event.getBlock().getLocation(), (region, location) -> {
             var time = plugin.config.clockDisableTime();
 
-            plugin.getServer().getAsyncScheduler().runDelayed(plugin, task ->
-                    controller.decreaseState(region), time, TimeUnit.MILLISECONDS);
+            plugin.executor.schedule(() -> controller.decreaseState(region), time, TimeUnit.MILLISECONDS);
 
             if (controller.increaseState(region) < controller.getMaxUpdates()) return;
-            event.setNewCurrent(event.getOldCurrent());
+            if (plugin.config.disableClocks()) event.setNewCurrent(event.getOldCurrent());
 
             if (controller.isBlocked(region)) return;
-            broadcastWarning(location, region);
-
             controller.setBlocked(region, true);
-            plugin.getServer().getAsyncScheduler().runDelayed(plugin, task ->
-                    controller.setBlocked(region, false), time, TimeUnit.MILLISECONDS);
+
+            broadcastWarning(location, region);
+            plugin.executor.schedule(() -> controller.setBlocked(region, false), time, TimeUnit.MILLISECONDS);
         });
     }
 

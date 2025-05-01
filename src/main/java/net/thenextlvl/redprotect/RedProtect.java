@@ -16,12 +16,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class RedProtect extends JavaPlugin {
     public final PluginConfig config = new GsonFile<>(IO.of(getDataFolder(), "config.json"), new PluginConfig(
-            true, true, true, true, true, 18, TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10), 250000
+            true, true, true, true, true, true, 18, TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10), 250000
     )).saveIfAbsent().getRoot();
+    public final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     private final Key key = Key.key("redprotect", "translations");
     private final Path translations = getDataPath().resolve("translations");
@@ -35,7 +38,7 @@ public class RedProtect extends JavaPlugin {
     @Override
     public void onEnable() {
         registerListeners();
-        if (config.lagDisableRedstone()) getServer().getAsyncScheduler().runAtFixedRate(this, task -> {
+        if (config.lagDisableRedstone()) executor.scheduleAtFixedRate(() -> {
             if (getServer().getTPS()[0] <= config.disableRedstoneTPS() && redstone)
                 broadcastMeasure(redstone = false);
             else if (getServer().getTPS()[0] > config.disableRedstoneTPS() && !redstone)

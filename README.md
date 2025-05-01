@@ -24,6 +24,7 @@ To receive action messages the permission `redclock.notify` is required.</br>
   "enable-plot-protection": true, // whether plotsquared protect should be enabled
   "print-messages-to-console": true, // whether clock notifications should be printed to console
   "lag-disable-redstone": true, // whether redstone should be disabled when the server lags
+  "disable-clocks": true, // whether redstone clocks should be disabled
   "disable-redstone-tps": 18, // the tps when to disable redstone
   "lag-detect-interval-millis": 1000, // the interval of checking for lag
   "clock-disable-time-millis": 10000, // how long a clock should be disabled for
