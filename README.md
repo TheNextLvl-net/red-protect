@@ -12,7 +12,7 @@ To receive action messages the permission `redclock.notify` is required.</br>
 
 ## Supported Plugins
 
-- [PlotSqaured](https://github.com/IntellectualSites/PlotSquared)
+- [PlotSquared](https://github.com/IntellectualSites/PlotSquared)
 - [Protect](https://github.com/TheNextLvl-net/protect)
 
 ## Configuration
