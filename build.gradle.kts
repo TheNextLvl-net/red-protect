@@ -86,6 +86,10 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
         platforms.register(Platforms.PAPER) {
             jar.set(tasks.shadowJar.flatMap { it.archiveFile })
             platformVersions.set(versions)
+            dependencies {
+                hangar("Protect") { required.set(false) }
+                url("PlotSquared", "https://github.com/IntellectualSites/PlotSquared")
+            }
         }
     }
 }
@@ -100,4 +104,7 @@ modrinth {
     syncBodyFrom.set(rootProject.file("README.md").readText())
     loaders.add("paper")
     loaders.add("folia")
+    dependencies {
+        optional.project("protect")
+    }
 }
