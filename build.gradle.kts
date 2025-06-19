@@ -96,7 +96,7 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
-    projectId.set("USLuwMUi")
+    projectId.set("loXscTUV")
     changelog = System.getenv("CHANGELOG")
     versionType = if (isRelease) "release" else "beta"
     uploadFile.set(tasks.shadowJar)
