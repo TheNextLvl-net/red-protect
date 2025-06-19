@@ -88,7 +88,7 @@ hangarPublish { // docs - https://docs.papermc.io/misc/hangar-publishing
             platformVersions.set(versions)
             dependencies {
                 hangar("Protect") { required.set(false) }
-                url("PlotSquared", "https://github.com/IntellectualSites/PlotSquared")
+                url("PlotSquared", "https://github.com/IntellectualSites/PlotSquared") { required.set(false) }
             }
         }
     }
