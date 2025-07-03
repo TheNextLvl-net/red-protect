@@ -28,7 +28,7 @@ dependencies {
     compileOnly("net.thenextlvl.core:nbt:2.3.2")
     compileOnly("net.thenextlvl.protect:api:3.0.3")
 
-    implementation("org.bstats:bstats-bukkit:3.1.0")
+    implementation("org.bstats:bstats-bukkit:3.1.1-SNAPSHOT")
     implementation("net.thenextlvl.core:files:3.0.0")
     implementation("net.thenextlvl.core:i18n:3.2.0")
     implementation("net.thenextlvl.core:paper:2.2.1")
