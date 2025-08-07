@@ -32,7 +32,7 @@ dependencies {
     implementation("net.thenextlvl.core:files:3.0.0")
     implementation("net.thenextlvl.core:i18n:3.2.0")
     implementation("net.thenextlvl.core:paper:2.2.1")
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.52"))
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.55"))
 }
 
 java {
