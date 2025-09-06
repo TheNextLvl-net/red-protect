@@ -18,6 +18,7 @@ repositories {
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.thenextlvl.net/releases")
+    maven("https://repo.thenextlvl.net/snapshots")
 }
 
 dependencies {
@@ -25,8 +26,7 @@ dependencies {
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 
-    compileOnly("net.thenextlvl.core:nbt:2.3.3")
-    compileOnly("net.thenextlvl.protect:api:3.1.0")
+    compileOnly("net.thenextlvl.protect:api:3.1.1")
 
     implementation("org.bstats:bstats-bukkit:3.1.1-SNAPSHOT")
     implementation("net.thenextlvl.core:files:3.0.0")
