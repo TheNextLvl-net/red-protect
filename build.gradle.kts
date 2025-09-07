@@ -31,7 +31,7 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:3.1.1-SNAPSHOT")
     implementation("net.thenextlvl.core:files:3.0.0")
     implementation("net.thenextlvl.core:i18n:3.2.1")
-    implementation("net.thenextlvl.core:paper:2.2.1")
+    implementation("net.thenextlvl.core:paper:2.3.0-pre4")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.55"))
 }
 
