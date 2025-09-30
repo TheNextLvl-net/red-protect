@@ -24,7 +24,7 @@ repositories {
 dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
-    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.9-R0.1-SNAPSHOT")
 
     compileOnly("net.thenextlvl.protect:api:3.1.1")
 
