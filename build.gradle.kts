@@ -103,7 +103,6 @@ modrinth {
     gameVersions.set(versions)
     syncBodyFrom.set(rootProject.file("README.md").readText())
     loaders.add("paper")
-    loaders.add("folia")
     dependencies {
         optional.project("protect")
     }
