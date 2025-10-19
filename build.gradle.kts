@@ -26,7 +26,7 @@ dependencies {
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 
-    compileOnly("net.thenextlvl.protect:api:3.1.2")
+    compileOnly("net.thenextlvl:protect:3.1.3")
 
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation("net.thenextlvl.core:files:3.0.1")
