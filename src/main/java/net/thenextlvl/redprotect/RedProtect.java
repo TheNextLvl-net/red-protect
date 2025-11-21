@@ -1,10 +1,10 @@
 package net.thenextlvl.redprotect;
 
 import core.file.format.GsonFile;
-import core.i18n.file.ComponentBundle;
 import core.io.IO;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
+import net.thenextlvl.i18n.ComponentBundle;
 import net.thenextlvl.redprotect.controller.AreaRedstoneController;
 import net.thenextlvl.redprotect.controller.ChunkRedstoneController;
 import net.thenextlvl.redprotect.controller.PlotRedstoneController;
