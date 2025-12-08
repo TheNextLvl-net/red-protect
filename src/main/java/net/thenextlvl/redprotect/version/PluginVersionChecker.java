@@ -1,8 +1,8 @@
 package net.thenextlvl.redprotect.version;
 
-import core.paper.version.PaperModrinthVersionChecker;
-import core.version.SemanticVersion;
 import net.thenextlvl.redprotect.RedProtect;
+import net.thenextlvl.version.SemanticVersion;
+import net.thenextlvl.version.modrinth.paper.PaperModrinthVersionChecker;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 

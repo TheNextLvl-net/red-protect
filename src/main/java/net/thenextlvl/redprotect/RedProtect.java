@@ -1,7 +1,6 @@
 package net.thenextlvl.redprotect;
 
-import core.file.format.GsonFile;
-import core.io.IO;
+import core.file.formats.GsonFile;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.thenextlvl.i18n.ComponentBundle;
@@ -23,7 +22,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class RedProtect extends JavaPlugin {
-    public final PluginConfig config = new GsonFile<>(IO.of(getDataFolder(), "config.json"), new PluginConfig(
+    public final PluginConfig config = new GsonFile<>(getDataPath().resolve("config.json"), new PluginConfig(
             true, true, true, true, true, true, 18, TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10), 250000
     )).saveIfAbsent().getRoot();
     public final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
