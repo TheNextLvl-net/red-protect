@@ -26,7 +26,7 @@ dependencies {
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 
-    compileOnly("net.thenextlvl:protect:3.2.2")
+    compileOnly("net.thenextlvl:protect:3.2.3")
 
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.1")
