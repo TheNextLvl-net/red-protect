@@ -30,7 +30,7 @@ dependencies {
 
     implementation("net.thenextlvl.core:files:4.0.0-pre1")
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.1")
-    implementation("net.thenextlvl:i18n:1.1.0")
+    implementation("net.thenextlvl:i18n:1.2.0")
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.56-SNAPSHOT"))
 }
