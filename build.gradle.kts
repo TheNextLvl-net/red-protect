@@ -32,7 +32,7 @@ dependencies {
     implementation("net.thenextlvl.version-checker:modrinth-paper:1.0.1")
     implementation("net.thenextlvl:i18n:1.2.0")
     implementation("org.bstats:bstats-bukkit:3.2.1")
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.56-SNAPSHOT"))
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.57-SNAPSHOT"))
 }
 
 java {
